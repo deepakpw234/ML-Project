@@ -17,11 +17,12 @@ from src.utils import save_object
 @dataclass
 class DataTransformationconfig:
     preprocerssor_obj_file_path = os.path.join('artifacts',"preprocessor.pkl")
-
+    # print(f"20: {preprocerssor_obj_file_path}")
 
 class DataTransformation:
     def __init__(self) -> None:
         self.data_transformation_config = DataTransformationconfig()
+        # print(f"25: {self.data_transformation_config}")
 
     def get_data_transformer_object(self):
         '''
@@ -41,6 +42,7 @@ class DataTransformation:
                     ("scaler",StandardScaler(with_mean=False))
                 ]
             )
+            # print(f"45: {num_pipeline}")
 
             cat_pipeline = Pipeline(
                 steps=[
@@ -49,6 +51,7 @@ class DataTransformation:
                     ("scaler",StandardScaler(with_mean=False))
                 ]
             )
+            # print(f"54: {cat_pipeline}")
 
             logging.info(f"Numerical columns : {numerical_columns}")
 
@@ -60,6 +63,7 @@ class DataTransformation:
                     ("cat_pipeline",cat_pipeline,category_columns)
                 ]
             )
+            # print(f"66: {preprocessor}")
             logging.info("Data transformation is completed")
             return preprocessor
         
@@ -71,12 +75,16 @@ class DataTransformation:
         try:
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)
+            # print(f"78: {train_path}")
+            # print(f"79: {test_path}")
+
 
             logging.info("Read train and test data completed")
 
             logging.info("obtaining preprocessing object")
 
             preprocessing_obj = self.get_data_transformer_object()
+            # print(f"87: {preprocessing_obj}")
 
             target_column_name = 'math_score'
             numerical_columns = ["reading_score", "writing_score"]
@@ -91,14 +99,23 @@ class DataTransformation:
 
             input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
-
+            # print(f"102: {input_feature_train_arr}")
+            # print(f"103: {input_feature_test_arr}")
+            
             train_arr = np.c_[
                 input_feature_train_arr,np.array(target_feature_train_df)
             ]
 
+            # print(f"109: {train_arr}")
+            # print(f"110: {np.array(target_feature_train_df)}")
+            
+
             test_arr = np.c_[
                 input_feature_test_arr,np.array(target_feature_test_df)
             ]
+
+            # print(f"117: {test_arr}")
+            # print(f"118: {np.array(target_feature_test_df)}")
 
             logging.info("Saved preprocessing object")
 
