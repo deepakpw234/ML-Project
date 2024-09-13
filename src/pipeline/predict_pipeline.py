@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 from src.exception import CustomException
 from src.utils import load_object
+import os
 
 
 class PredictPipeline:
@@ -10,8 +11,8 @@ class PredictPipeline:
 
     def get_predict(self,features):
         try:
-            model_path = 'artifacts\model.pkl'
-            preprocessor_path = 'artifacts\preprocessor.pkl'
+            model_path = os.path.join("artifacts","model.pkl")
+            preprocessor_path = os.path.join("artifacts","preprocessor.pkl")
             model = load_object(file_path = model_path)
             preprocessor = load_object(file_path = preprocessor_path)
 
@@ -25,7 +26,7 @@ class PredictPipeline:
 
 class CustomData:
     def __init__(self, gender: str, race_ethnicity: str,parental_level_of_education: str,
-        lunch: str,test_preparation_course: str,reading_score: int,writing_score: int):
+        lunch: str,test_preparation_course: str,reading_score: ,writing_score:):
 
         self.gender = gender
 
